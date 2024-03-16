@@ -28,12 +28,21 @@ export default function Page() {
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
           {/* Add Hero Images Here */}
+
+          {/* ==> Las Image son lazy load, es decir que si no se pueden renderizar no las carga <== */}
           <Image
             src={'/hero-desktop.png'}
             alt='Hero desktop'
             width={1000}
             height={700}
             className='hidden md:block'
+          />
+          <Image
+            src={'/hero-mobile.png'}
+            alt='Hero mobile'
+            width={560}
+            height={620}
+            className='block md:hidden'
           />
         </div>
       </div>
