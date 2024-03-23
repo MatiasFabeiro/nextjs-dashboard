@@ -63,6 +63,12 @@ export async function fetchCardData() {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
+
+    console.log('Fetching cards data...');
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    console.log('Cards data fetch completed after 800 miliseconds.');
+
     const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
     const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
     const invoiceStatusPromise = sql`SELECT
