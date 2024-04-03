@@ -1,4 +1,4 @@
-// Este archivo iria en el mismo nivel que el layour y page de la carpeta o ruta dashboard.
+// Este archivo iria en el mismo nivel que el layout y page de la carpeta o ruta dashboard.
 // Los archivos de loading, por defecto en Next, nos retornan lo que nosotros le definamos si la data del archivo page, que este en su mismo nivel
 // en el directorio, no esta disponible.
 

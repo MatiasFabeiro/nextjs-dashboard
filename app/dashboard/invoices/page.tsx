@@ -7,6 +7,19 @@ import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchInvoicesPages } from '@/app/lib/data';
  
+// ===> DOCUMENTATION <===
+
+// 1. Los searchParams buscan de forma nativa leer los params especificados en una URL, si luego de un "?" buscamos la palabra que especificamos en el componente, ej:
+// export default async function InvoicesPage({searchParams}: {
+//   searchParams?: {
+//     search?: string
+//     page?: string
+//   }
+// }) {}
+// si la query contiene algun param que se llame "search" o "page", los tomara como referencia o valor.
+
+// ===> DOCUMENTATION <===
+
 export default async function InvoicesPage({searchParams}: {
   searchParams?: {
     search?: string
@@ -15,7 +28,7 @@ export default async function InvoicesPage({searchParams}: {
 }) {
   const query = searchParams?.search || ''
   const currentPage = Number(searchParams?.page) || 1
-  // console.log(searchParams)
+  // console.log("searchParams", searchParams)
 
   const totalPages = await fetchInvoicesPages(query)
   // console.log(totalPages)

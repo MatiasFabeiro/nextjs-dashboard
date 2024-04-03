@@ -1,0 +1,11 @@
+Las carpetas que se establecen con [] son carpetas dinamicas, o mejor dicho rutas dinamicas.
+En estos casos, nosotros no sabemos el dato o nombre que va a llegar por URL hasta que accedemos a el, por ejemplo, si quisieramos acceder a un invoice y abrir
+una pagina basada en el que clickeamos, necesitariamos el id de ese invoice especifico, para esto sirve declarar una carpeta entre [], ya que dinamicamente
+lograremos que le llegue el dato y asi poder acceder a la pagina que buscamos.
+
+
+- Explicacion oficial:
+
+Next.js allows you to create Dynamic Route Segments when you don't know the exact segment name and want to create routes based on data. 
+This could be blog post titles, product pages, etc. You can create dynamic route segments by wrapping a folder's name in square brackets. 
+For example, [id], [post] or [slug].
