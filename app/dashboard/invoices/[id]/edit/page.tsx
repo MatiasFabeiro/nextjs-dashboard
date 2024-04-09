@@ -1,6 +1,7 @@
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
+import { notFound } from 'next/navigation';
  
 // ===> DOCUMENTATION <===
 
@@ -18,6 +19,10 @@ export default async function EditInvoices({ params }: { params: { id: string } 
     fetchInvoiceById(id),
     fetchCustomers(),
   ])
+
+  if(!invoice) {
+    notFound();
+  }
 
   return (
     <main>

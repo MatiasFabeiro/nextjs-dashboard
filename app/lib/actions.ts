@@ -55,10 +55,16 @@ export async function createInvoice(formData: FormData) {
   const amountInCents = amount * 100;
   const date = new Date().toISOString().split('T')[0]; // ==> Create a new date with the format "YYYY-MM-DD"
 
-  await sql`
-    INSERT INTO invoices (customer_id, amount, status, date)
-    VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
-  `; // ===> Se espera a insertar los datos dentro de la base de datos
+  try{
+    await sql`
+      INSERT INTO invoices (customer_id, amount, status, date)
+      VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+    `; // ===> Se espera a insertar los datos dentro de la base de datos
+  } catch (e) {
+    return {
+      message: 'Error creating Invoice.'
+    }
+  }
 
   // 2.
   // const rawFormData = Object.fromEntries(formData.entries());
@@ -66,6 +72,7 @@ export async function createInvoice(formData: FormData) {
   // console.log(`customerId: ${customerId}`, `amount: ${amount}`, `status: ${status}`);
 
   // 3.
+  console.log('Invoice Created.')
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 }
@@ -80,17 +87,34 @@ export async function updateInvoice(id:string, formData: FormData) {
   const amountInCents = amount * 100;
   const date = new Date().toISOString().split('T')[0];
 
-  await sql`
-    UPDATE invoices
-    SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-    WHERE id = ${id}
-  `;
+  try{
+    await sql`
+      UPDATE invoices
+      SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+      WHERE id = ${id}
+    `;
+  } catch (e) {
+    return{
+      message: 'Error updating Invoice.'
+    }
+  }
 
+  console.log('Invoice Updated.')
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 }
 
 export async function deleteInvoice(id: string) {
-  await sql`DELETE FROM invoices WHERE id = ${id}`
-  revalidatePath('/dashboard/invoices')
+  // throw new Error('Failed to Delete Invoice');
+  
+  try{
+    await sql`DELETE FROM invoices WHERE id = ${id}`
+    revalidatePath('/dashboard/invoices')
+    return { message: 'Invoice Deleted.' };
+  } catch (e) {
+    return{
+      message: 'Error deleting Invoice.'
+    }
+  }
+
 }
