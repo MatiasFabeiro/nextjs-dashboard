@@ -31,27 +31,78 @@ import { redirect } from 'next/navigation';
 // por lo tanto para que se limpie el cache y se muestren los nuevos datos debemos utilizar el revalidate, lo siguiente es una redireccion con el redirect de next
 // para que cuando se cree el invoice se envie al usuario directamente a la pagina de /dashboard/invoices.
 
+// 4. Con coerce transformamos el tipo, que puede llegar como string, a un number. (puede usarse para transformar a string, fechas, etc.) 
+// (no tiene por que ser siempre number).
+// Como estamos haciendo una coercion de string a number, si el campo no se llena siempre llegara en 0. Por lo tanto, le estableceremos a Zod que siempre queremos
+// un valor mayor a 0 en este campo con la funcion .gt()
+
+// 5. Es la estructura de tipado que tendrá prevState. prevState en createInvoice hace referencia al estado anterior o inicial que recibira o tendra createInvoice,
+// que, en este caso, será ==> const initialState = {message: null, errors: {} }; (en create-form.tsx) <== dado que dicho estado es enviado por useFormState al 
+// accionarse a través del dispatch en el form.
+
+// 6. parse vs safeParse:
+
+// --> parse: Este método intenta analizar y validar los datos de entrada según el esquema especificado. Si la validación falla, parse lanzará una excepción 
+// de tipo ZodError que contiene información detallada sobre los errores de validación encontrados. Esto significa que parse es una operación "no segura" (unsafe),
+//  ya que puede arrojar una excepción que debe ser manejada por el código que llama.
+
+// --> safeParse: A diferencia de parse, safeParse es una operación "segura" (safe) que no arroja excepciones en caso de errores de validación. En su lugar, 
+// devuelve un objeto ZodParsedType<T>, que es un objeto que contiene dos propiedades: success (indicando si la validación fue exitosa) y data (que contiene 
+// los datos validados si success es true, o undefined si la validación falló). Esto hace que safeParse sea útil en situaciones donde prefieres manejar los errores 
+// de validación de manera más controlada sin necesidad de usar bloques try-catch.
+
 // ===> DOCUMENTATION <===
 
 const FormSchema = z.object({
   id: z.string(),
-  customerId: z.string(),
-  amount: z.coerce.number(),
-  status: z.enum(['pending', 'paid']),
+  customerId: z.string({
+    invalid_type_error: 'Please select a customer.',
+  }),
+  amount: z.coerce
+  .number()
+  .gt(0, { message: 'Please enter an amount greater than $0.' }), // ==> 4.
+  status: z.enum(['pending', 'paid'], {
+    invalid_type_error: 'Please select an invoice status.'
+  }),
   date: z.string(),
 })
 
 const CreateInvoice = FormSchema.omit({ id: true, date: true})
 const UpdateInvoice = FormSchema.omit({ id: true, date: true})
 
-export async function createInvoice(formData: FormData) {
+// 5.
+export type State = {
+  errors?: {
+    customerId?: string[];
+    amount?: string[];
+    status?: string[];
+  };
+  message?: string | null;
+}
+
+export async function createInvoice(prevState: State, formData: FormData) {
   // 1.
-  const { customerId, amount, status } = CreateInvoice.parse({
+  // const { customerId, amount, status } = CreateInvoice.parse({
+  //   customerId: formData.get('customerId'),
+  //   amount: formData.get('amount'),
+  //   status: formData.get('status'),
+  // });
+
+  // 6.
+  const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
 
+  if(!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Invoice',
+    };
+  }
+
+  const { customerId, amount, status } = validatedFields.data;
   const amountInCents = amount * 100;
   const date = new Date().toISOString().split('T')[0]; // ==> Create a new date with the format "YYYY-MM-DD"
 
