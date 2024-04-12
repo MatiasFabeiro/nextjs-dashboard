@@ -24,7 +24,7 @@ import { useFormState } from 'react-dom';
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
   // 1.
-  const initialState = {message: null, errors: {} };
+  const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createInvoice, initialState);
   
   return (
@@ -151,7 +151,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         </div>
         { 
           state.errors?.customerId || state.errors?.amount || state.errors?.status ? 
-          <p className='mt-2 text-sm text-red-500' key={"MissingFieldsError"}> Missing Fields. Failed to Create Invoice </p> : <></> 
+          <p className='mt-2 text-sm text-red-500' key={"CreateInvoiceMissingFieldsError"}> Missing Fields. Failed to Create Invoice </p> : <></> 
         }
       </div>
       <div className="mt-6 flex justify-end gap-4">
