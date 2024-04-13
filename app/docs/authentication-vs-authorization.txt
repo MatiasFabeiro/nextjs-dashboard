@@ -1,0 +1,6 @@
+La Autentificacion se refiere a poder demostrar que el usuario es quien dice ser, hay muchas formas de autentificacion, 
+generalmente esto se hace a traves de un login en el cual el usuario debe utilizar su usuarioi y contraseña, pero tambien hay mas metodos que suelen proveer un token,
+como aplicaciones de autentificacion doble (2-factor authentication (2FA)), emails con tokens, apps con tokens, etc.
+
+La Autorizacion, en cambio, establece a que partes puede ingresar dicho usuario de acuerdo a su nivel de autorizacion de cuenta, suele ser la seguridad
+establecida en la aplicacion para que no todos los datos sean de publico acceso.
