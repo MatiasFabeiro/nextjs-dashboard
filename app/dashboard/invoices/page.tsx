@@ -6,6 +6,7 @@ import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchInvoicesPages } from '@/app/lib/data';
+import { Metadata } from 'next';
  
 // ===> DOCUMENTATION <===
 
@@ -19,6 +20,10 @@ import { fetchInvoicesPages } from '@/app/lib/data';
 // si la query contiene algun param que se llame "search" o "page", los tomara como referencia o valor.
 
 // ===> DOCUMENTATION <===
+
+export const metadata: Metadata = {
+  title: 'Invoices',
+};
 
 export default async function InvoicesPage({searchParams}: {
   searchParams?: {

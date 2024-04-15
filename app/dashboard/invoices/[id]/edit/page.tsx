@@ -2,6 +2,7 @@ import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
  
 // ===> DOCUMENTATION <===
 
@@ -10,6 +11,10 @@ import { notFound } from 'next/navigation';
 // entre [] reciban el valor, con params nosotros podemos tomar este valor y utilizarlo en el componente.
 
 // ===> DOCUMENTATION <===
+
+export const metadata: Metadata = {
+  title: 'Edit Invoice'
+}
 
 // 1.
 export default async function EditInvoices({ params }: { params: { id: string } }) {

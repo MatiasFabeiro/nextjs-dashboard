@@ -130,7 +130,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
   redirect('/dashboard/invoices');
 }
 
-export async function updateInvoice(id:string, prevState: State, formData: FormData) {
+export async function updateInvoice(id: string, prevState: State, formData: FormData) {
   // const { customerId, amount, status } = UpdateInvoice.parse({
   //   customerId: formData.get('customerId'),
   //   amount: formData.get('amount'),
